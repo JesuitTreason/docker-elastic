@@ -10,6 +10,8 @@ services:
       # https://github.com/docker/swarmkit/issues/1951
       - node.name={{.Node.Hostname}}
       - discovery.seed_hosts=elasticsearch
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME:-elastic}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD:-changeme}
       - cluster.initial_master_nodes=${INITIAL_MASTER_NODES:-node1}
       - cluster.name=DevOps
       - xpack.security.enabled=true
