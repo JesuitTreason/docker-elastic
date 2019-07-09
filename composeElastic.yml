@@ -4,7 +4,7 @@ version: "3.7"
 # Using Apache JMeter to Test Elasticsearch: https://ecmarchitect.com/archives/2014/09/02/3915
 
 services:
-elasticsearch:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION:-7.1.1}
     environment:
       # https://github.com/docker/swarmkit/issues/1951
