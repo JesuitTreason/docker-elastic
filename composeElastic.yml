@@ -18,20 +18,30 @@ services:
       - xpack.monitoring.collection.enabled=true
       - xpack.license.self_generated.type=trial
       - network.host=0.0.0.0
-    
-    ports:
-      - "9000:9000"
     networks:
-      - elastic
+      - traefik-private
+      - traefik-public
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     deploy:
-      mode: 'global'
-      endpoint_mode: dnsrr
+
+      labels:
+        - traefik.backend.loadbalancer.method=drr
+        - traefik.frontend.rule=Host:elasticsearch.${DOMAIN}
+        - traefik.enable=true
+        - traefik.port=9200
+        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+        - traefik.webservice.frontend.entryPoints=http 
 
 networks:
-    elastic:
+    traefik-private:
       external: true
-
+    traefik-public:
+      external: true
+      
 volumes:
   elasticsearch:
